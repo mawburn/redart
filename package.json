@@ -1,0 +1,15 @@
+{
+  "name": "eve-trader",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --experimental-modules .",
+    "regions": "node --experimental-modules ./getLowSec.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
