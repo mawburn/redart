@@ -43,7 +43,7 @@ export default class RegionMarket {
                                 return page.body.map(rawOrder => {
                                     const order = new Order(rawOrder)
 
-                                    if(order.highSec) {
+                                    if(order.highSec && (!order.buy || order.price > 3)) {
                                         return order
                                     }
                                 })
@@ -53,6 +53,7 @@ export default class RegionMarket {
 
                             resolve(orders)
                         })
+                        .catch(err => console.log(err))
                 })
         })        
     }
