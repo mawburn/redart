@@ -7,7 +7,7 @@ const api = {
         location: (charId) => `${url}/characters/${charId}/location`,
         ship: (charId) => `${url}/characters/${charId}/ship`,
     },
-    markets: {
+    market: {
         orders: (regionId, type, page) => `${url}/markets/${regionId}/orders?order_type=${type}&page=${page}`,
     },
     route: (origin, destination) => `${url}/route/${origin}/${destination}`,
@@ -15,6 +15,11 @@ const api = {
         system: (systemId) => `${url}/universe/systems/${systemId}`,
         station: (stationId) => `${url}/stations/${stationId}`
     },
+    region: {
+        search: query => `${url}/search?categories=region&search=${query}`,
+        info: regionId => `${url}/universe/regions/${regionId}/`
+    },
+    constellations: constellationId => `${url}/universe/constellations/${constellationId}/`,
 }
 
 export default api

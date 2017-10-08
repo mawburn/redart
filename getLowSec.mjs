@@ -1,5 +1,10 @@
 import request from 'request'
+import fs from 'fs'
 import api from './api'
+
+import redoSaved from './redo.json'
+import highSec from './highSec.json'
+import allSystems from './allSystems.json'
 
 const empireRegions = []
 
@@ -61,8 +66,11 @@ const empireRegionIds = [
     10000067,
 ]
 
+let empireSystems = []
 
-regionNames.forEach((region) => {
+const empiresChecked = []
+
+/*regionNames.forEach((region) => {
     request({
         uri: api.searchIt('region', region),
         method: 'GET'
@@ -70,11 +78,77 @@ regionNames.forEach((region) => {
         const json = JSON.parse(body)
         empireRegions.push(json.region)   
     }) 
+})*/
+
+
+
+
+/*empireRegionIds.forEach(region => {
+    request({
+        uri: api.region.info(region),
+        method: 'GET'
+    }, (err, res, body) => {
+        const json = JSON.parse(body)
+        
+        if(json.constellations) {
+            json.constellations.forEach(c => {
+                request({
+                    uri: api.constellations(c),
+                    method: 'GET'
+                }, (error, response, cBody) => {
+                    const cStuff = JSON.parse(cBody) 
+
+                    if(cStuff.systems) {
+                        empireSystems = empireSystems.concat(cStuff.systems)
+                    }
+                }) 
+            }) 
+        }
+        
+    }) 
+})*/
+
+let count = 0
+
+let stations = []
+const redo = []
+
+highSec.forEach(system => {
+    request({
+        uri: api.location.system(system),
+        method: 'GET'
+    }, (err, res, body) => {
+        try {
+            const json = JSON.parse(body)
+
+            stations = stations.concat(json.stations) 
+            console.log(stations)           
+        } catch(error) {
+            redo.push(system)
+            console.log(error)
+        }
+    })
 })
 
-const interval = setInterval(() => {
-    if(empireRegions.length === regionNames.length) {
-        console.log(empireRegions)
-        clearInterval(interval)
-    }
-}, 250)
+setTimeout(() => {
+    stations.sort((a, b) => a-b)
+
+    fs.writeFile('stations.json', JSON.stringify(stations), (err) => {
+        if(err) {
+            return console.log(err)
+        }
+
+        console.log('done')
+    })
+
+    fs.writeFile('redo.json', JSON.stringify(redo), err => {
+        if(err) {
+            return console.log(err)
+        }
+
+        console.log('done')
+    })
+
+}, 45000) 
+
+
