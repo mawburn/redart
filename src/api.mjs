@@ -20,6 +20,7 @@ const api = {
         info: regionId => `${url}/universe/regions/${regionId}/`
     },
     constellations: constellationId => `${url}/universe/constellations/${constellationId}/`,
+    type: typeId => `${url}/universe/types/${typeId}`,
 }
 
 export default api

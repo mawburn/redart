@@ -1,17 +1,16 @@
 import fs from 'fs'
-import getMarket from './regionMarket'
+import RegionMarket from './RegionMarket'
 
-getMarket('10000002')
-    .then(orders => {
-        fs.writeFile('./tmp/buyOrders.json', JSON.stringify(orders.buy), err => {
-            if(err) {
-                return console.log(err)
-            }
-        })
+const forge = new RegionMarket('10000002')
 
-        fs.writeFile('./tmp/sellOrders.json', JSON.stringify(orders.sell), err => {
+forge.getData()
+    .then(data => {
+        const orders = JSON.stringify(data)
+
+        fs.writeFile(`./tmp/${forge.id}.json`, orders, err => {
             if(err) {
                 return console.log(err)
             }
         })
     })
+    .catch(err => console.log(err))
