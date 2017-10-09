@@ -49,7 +49,7 @@ export default class RegionMarket {
                                 })
                             })
 
-                            const orders = [].concat(...pages)    
+                            const orders = [].concat(...pages).filter(o => o)
 
                             resolve(orders)
                         })
@@ -58,7 +58,14 @@ export default class RegionMarket {
         })        
     }
 
-    getPage(page) {
+    getPage(page, count = 0) {
         return request(this.options(page))
+            .catch(() => {
+                if(count < 5) {
+                    return this.getPage(page, ++count)
+                }
+
+                console.log(`Couldn't get ${this.region} - page ${page}`)
+            })
     }
 }

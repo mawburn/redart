@@ -4,7 +4,7 @@ import highSecStations from '../eveData/highSecStations'
 
 export default class Order {
     constructor(order) {
-        const highSec = bs(highSecStations, this.id, (a,b) => a-b) > -1
+        const highSec = bs(highSecStations, order['location_id'], (a,b) => a-b) > -1
         const ends = moment(order.issued).add(order.duration, 'days').utc().format()
 
         Object.assign(this, {
