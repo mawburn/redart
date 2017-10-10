@@ -20,10 +20,12 @@ export default class ItemOrders {
         const sellLowest = sell[0].price * (marginPercent + 1)
         const buyMax = buy[0].price
 
-        const buyOrders = buy.filter(order => order.price > sellLowest)
-        const sellOrders = sell.filter(order => order.price < buyOrders[buyOrders.length-1].price)
 
-        if(sellLowest < buyMax && (buyMax - sellLowest > 2000000)) {
+        if(sellLowest < buyMax) {
+
+            const buyOrders = buy.filter(order => order.price > sellLowest)
+            const sellOrders = sell.filter(order => order.price < buyMax)
+
             return {
                 ...order,
                 orders: {
