@@ -20,7 +20,7 @@ export default class ItemOrders {
         const sellLowest = sell[0].price * (marginPercent + 1)
         const buyMax = buy[0].price
 
-        if(sellLowest < buyMax) {
+        if(sellLowest < buyMax && (buyMax - sellLowest > 2000000)) {
             return {
                 ...order,
                 orders: {
