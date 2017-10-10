@@ -3,14 +3,19 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=8.5.0"
+  },
   "scripts": {
     "start": "node --experimental-modules ./src",
-    "regions": "node --experimental-modules ./getLowSec.mjs"
+    "regions": "node --experimental-modules ./getLowSec.mjs",
+    "server": "node --experimental-modules ./server.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "binary-search": "^1.3.2",
+    "express": "^4.16.1",
     "moment": "^2.18.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
