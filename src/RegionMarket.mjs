@@ -46,10 +46,10 @@ export default class RegionMarket {
                                     if(order.highSec && order.legal && (!order.buy || order.price > 3)) {
                                         return order
                                     }
-                                })
-                            })
+                                }).filter(o => o)
+                            }).filter(p => p)
 
-                            const orders = [].concat(...pages).filter(o => o)
+                            const orders = [].concat(...pages)
 
                             resolve(orders)
                         })
