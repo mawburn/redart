@@ -2,8 +2,8 @@ import itemInfo from '../eveData/itemInfo'
 
 export default class ItemOrders {
     constructor(item) {
-        this.mass = itemInfo[item]
-        this.name = itemInfo[item]
+        this.mass = itemInfo[item].mass
+        this.name = itemInfo[item].name
 
         this.orders = {
             sell: [],

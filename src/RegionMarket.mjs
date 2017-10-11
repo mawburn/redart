@@ -3,7 +3,6 @@ import moment from 'moment'
 import Order from './Order'
 import requester from './requester'
 import api from './api'
-import fs from 'fs'
 
 export default class RegionMarket {
     constructor(region) {
@@ -30,12 +29,7 @@ export default class RegionMarket {
             chain,
             data: [],
             requester: (p) => this.getPage(p),
-            processor: (x) => {
-                const concatted = [].concat(...x)
-                const rand = Math.random() * (10000 - 1) + 1
-                fs.writeFile(`./tmp/x${rand}`, JSON.stringify(concatted))
-                return [].concat(...x)
-            },
+            processor: (x) => [].concat(...x),
             limit: 5,
         })
     }
