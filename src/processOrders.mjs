@@ -4,10 +4,11 @@ import requester from './requester'
 import RegionMarket from './RegionMarket'
 import ItemOrders from './ItemOrders'
 import empire from '../eveData/empireRegions.json'
+import fs from 'fs'
 
 const processMarketData = (data, oldData) => {
     const newData = oldData
-    const marketData = [].concat(...data)
+    const marketData = data
 
     marketData.forEach(order => {
         let itemOrder = newData[order.type] || new ItemOrders(order.type)
@@ -37,6 +38,8 @@ const getRegionData = () => {
 const processOrders = () => {
     return getRegionData()
         .then(data => {
+            fs.writeFile(`./tmp/${Math.random() * (10000 - 1) + 1}`, JSON.stringify(data))
+
             const items = {
                 expires: moment().add(300, 'seconds').utc().format()
             }

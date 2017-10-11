@@ -16,6 +16,7 @@ const pendingOrders = () => {
     return new Promise((resolve, reject) => {
         processOrders()
             .then(data => {
+                console.log('done')
                 GOOD_ORDERS = data
                 resolve()
             })

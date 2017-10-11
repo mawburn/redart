@@ -27,6 +27,7 @@ const requester = (input) => {
                 })
             })
             .catch(err => {
+                console.log(err)
                 console.log(`retrying ${JSON.stringify(shortChain)}`)
 
                 let retry = input.retry || 10
@@ -41,7 +42,7 @@ const requester = (input) => {
                     data,
                     requester,
                     processor,
-                    retry: --count,
+                    retry: --retry,
                 })
             })
     }).then(data => {
