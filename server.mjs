@@ -1,12 +1,12 @@
 import express from 'express'
 import processOrders from './src/processOrders'
-import memeye from 'memeye'
 import moment from 'moment'
+import timeout from 'connect-timeout'
 
 const app = express()
 const port = process.env.PORT || 8080
 
-memeye()
+app.use(timeout('200s'));
 
 let GOOD_ORDERS = {
     expires: moment().subtract(10, 'seconds').utc().format()

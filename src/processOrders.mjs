@@ -30,7 +30,7 @@ const getRegionData = () => {
         data: {},
         requester: (r) => new RegionMarket(r).getData(),
         processor: processMarketData,
-        limit: 3,
+        limit: 10,
     })
 }
 

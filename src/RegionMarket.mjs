@@ -30,7 +30,7 @@ export default class RegionMarket {
             data: [],
             requester: (p) => this.getPage(p),
             processor: (x) => [].concat(...x),
-            limit: 5,
+            limit: 10,
         })
     }
 
