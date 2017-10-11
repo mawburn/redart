@@ -1,10 +1,12 @@
+import itemInfo from '../eveData/itemInfo'
 
 export default class ItemOrders {
     constructor(item) {
-        this.id = item
         this.orders = {
             sell: [],
             buy: [],
+            mass: itemInfo[item],
+            name: itemInfo[item],
         }
     }
 
@@ -20,9 +22,7 @@ export default class ItemOrders {
         const sellLowest = sell[0].price * (marginPercent + 1)
         const buyMax = buy[0].price
 
-
         if(sellLowest < buyMax) {
-
             const buyOrders = buy.filter(order => order.price > sellLowest)
             const sellOrders = sell.filter(order => order.price < buyMax)
 

@@ -7,15 +7,18 @@
     "node": ">=8.5.0"
   },
   "scripts": {
-    "get": "node --experimental-modules ./src",
     "regions": "node --experimental-modules ./getLowSec.mjs",
-    "start": "node --experimental-modules ./server.mjs"
+    "dev": "node --experimental-modules ./server.mjs",
+    "start": "cross-env PORT=80 node --experimental-modules ./server.mjs",
+    "items": "node --experimental-modules ./src/buildItems.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "binary-search": "^1.3.2",
+    "cross-env": "^5.0.5",
     "express": "^4.16.1",
+    "memeye": "^1.0.3",
     "moment": "^2.18.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",

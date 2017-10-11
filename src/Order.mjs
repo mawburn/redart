@@ -10,7 +10,6 @@ export default class Order {
         const ends = moment(order.issued).add(order.duration, 'days').utc().format()
 
         Object.assign(this, {
-            id: order['order_id'],
             type: order['type_id'],
             buy: order['is_buy_order'],
             volume: {

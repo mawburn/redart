@@ -30,42 +30,43 @@ export default class RegionMarket {
 
             orderPromises[0]
                 .then(response => {
-                    this.pages = response.headers['x-pages']
-                    this.expires = moment(response.headers.expires).utc().format()
-
                     for(let i = 2; i <= this.pages; i++) {
                         orderPromises.push(this.getPage(i))
                     }
 
                     Promise.all(orderPromises)
-                        .then(values => {
-                            const pages = values.map(page => {
-                                return page.body.map(rawOrder => {
-                                    const order = new Order(rawOrder)
-
-                                    if(order.highSec && order.legal && (!order.buy || order.price > 3)) {
-                                        return order
-                                    }
-                                }).filter(o => o)
-                            }).filter(p => p)
-
-                            const orders = [].concat(...pages)
-
-                            resolve(orders)
+                        .then(pages => {
+                            const regionOrders = [].concat(...pages).filter(p => p)
+                            resolve(regionOrders)
                         })
                         .catch(err => console.log(err))
-                })
+                }).catch(err => console.log(err))
         })        
     }
 
     getPage(page, count = 0) {
-        return request(this.options(page))
-            .catch(() => {
-                if(count < 5) {
-                    return this.getPage(page, ++count)
-                }
+        return new Promise((resolve, reject) => {
+            request(this.options(page))
+                .then(response => {
+                    this.pages = this.pages || response.headers['x-pages']
+                    this.expires = this.expires || moment(response.headers.expires).utc().format()
 
-                console.log(`Couldn't get ${this.region} - page ${page}`)
-            })
+                    const page = response.body.map(o => {
+                        const order = new Order(o)
+                        const shouldReturn = order.highSec && order.legal && (!order.buy || order.price > 3)
+
+                        return shouldReturn ? order : undefined
+                    }).filter(o => o)
+
+                    resolve(page)
+                })
+                .catch(err => {
+                    if(count < 15) {
+                        return this.getPage(page, ++count)
+                    }
+
+                    reject(err)
+                })
+        })
     }
 }
