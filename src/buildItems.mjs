@@ -36,7 +36,7 @@ let updateItems = () => {
             data.forEach(item => {
                 itemInfo[item['type_id']] = {
                     name: item.name,
-                    mass: item['packaged_volume'],
+                    vol: item['packaged_volume'],
                 }
             })
             fs.writeFileSync('./eveData/itemsList.json', JSON.stringify(itemList))

@@ -4,6 +4,8 @@ import Order from './Order'
 import requester from './requester'
 import api from './api'
 
+const pageLimit = process.env.PAGE_LIMIT || 5
+
 export default class RegionMarket {
     constructor(region) {
         this.id = region
@@ -30,7 +32,7 @@ export default class RegionMarket {
             data: [],
             requester: (p) => this.getPage(p),
             processor: (x) => [].concat(...x),
-            limit: 10,
+            limit: pageLimit,
         })
     }
 
@@ -63,11 +65,9 @@ export default class RegionMarket {
                     this.pages = this.pages || response.headers['x-pages']
                     this.expires = this.expires || moment(response.headers.expires).utc().format()
 
-                    return response.body.map(rawOrder => {
-                        const order = new Order(rawOrder)
-                        const shouldReturn = order.highSec && order.legal && (!order.buy || order.price > 3)
-                        return shouldReturn ? order : undefined
-                    }).filter(o => o)
+                    return response.body
+                                .map(rawOrder => new Order(rawOrder))
+                                .filter(o => o)
                 })
     }
 }
