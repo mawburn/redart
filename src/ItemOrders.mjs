@@ -2,8 +2,13 @@ import itemInfo from '../eveData/itemInfo'
 
 export default class ItemOrders {
     constructor(item) {
-        this.mass = itemInfo[item].mass
-        this.name = itemInfo[item].name
+        if(itemInfo[item]) {
+            this.mass = itemInfo[item].mass
+            this.name = itemInfo[item].name
+        } else {
+            console.log(`Can't find item: ${item}`)
+        }
+        
 
         this.orders = {
             sell: [],

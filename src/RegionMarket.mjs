@@ -4,6 +4,8 @@ import Order from './Order'
 import requester from './requester'
 import api from './api'
 
+const pageLimit = process.env.PAGE_LIMIT || 5
+
 export default class RegionMarket {
     constructor(region) {
         this.id = region
@@ -30,7 +32,7 @@ export default class RegionMarket {
             data: [],
             requester: (p) => this.getPage(p),
             processor: (x) => [].concat(...x),
-            limit: 5,
+            limit: pageLimit,
         })
     }
 

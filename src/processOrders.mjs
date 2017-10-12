@@ -5,6 +5,8 @@ import RegionMarket from './RegionMarket'
 import ItemOrders from './ItemOrders'
 import empire from '../eveData/empireRegions.json'
 
+const regionLimit = process.env.REGION_LIMIT || 5
+
 const processMarketData = (data, oldData) => {
     const newData = oldData
     const marketData = [].concat(...data)
@@ -30,7 +32,7 @@ const getRegionData = () => {
         data: {},
         requester: (r) => new RegionMarket(r).getData(),
         processor: processMarketData,
-        limit: 3,
+        limit: regionLimit,
     })
 }
 
