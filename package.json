@@ -10,7 +10,8 @@
     "regions": "node --experimental-modules ./getLowSec.mjs",
     "dev": "node --experimental-modules ./server.mjs",
     "start": "node --experimental-modules ./server.mjs",
-    "items": "node --experimental-modules ./src/buildItems.mjs"
+    "items": "node --experimental-modules ./src/buildItems.mjs",
+    "lint:fix": "eslint --fix --ext .js,.jsx,.mjs ."
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "binary-search": "^1.3.2",
     "connect-timeout": "^1.9.0",
     "cross-env": "^5.0.5",
+    "eslint": "^4.8.0",
     "express": "^4.16.1",
     "memeye": "^1.0.3",
     "moment": "^2.18.1",

@@ -6,33 +6,45 @@ import timeout from 'connect-timeout'
 const app = express()
 const port = process.env.PORT || 8080
 
-app.use(timeout('200s'))
-
 let GOOD_ORDERS = {
-    expires: moment().subtract(10, 'seconds').utc().format()
+  expires: moment().subtract(10, 'seconds').utc().format(),
+  pending: false,
 }
 
 const pendingOrders = () => {
-    return new Promise((resolve, reject) => {
-        processOrders()
-            .then(data => {
-                console.log('done')
-                GOOD_ORDERS = data
-                resolve()
-            })
-        })
+  const oldExpires = GOOD_ORDERS.expires
+
+  GOOD_ORDERS = {
+    expires: oldExpires,
+    pending: true,
+  }
+
+  processOrders()
+    .then(data => {
+      GOOD_ORDERS = {
+        pending: false,
+        ...data,
+      }
+
+      console.log('done')
+      resolve()
+    })
 }
 
 app.get('/', (req, res) => {
-    if(moment().isAfter(GOOD_ORDERS.expires)) {
-        pendingOrders()
-            .then(() => res.send(GOOD_ORDERS))
-            .catch(err => res.send(err))
-    } else {
-        res.send(GOOD_ORDERS)
-    }   
+  if(moment().isAfter(GOOD_ORDERS.expires)) {
+    pendingOrders()
+    res.status('202')
+    res.send('')
+  } else if(GOOD_ORDERS.pending) {
+    res.status('204')
+  } else {
+    res.status('200')
+    res.type('json')
+    res.send(GOOD_ORDERS)
+  }
 })
 
 app.listen(port, () => {
-    console.log(`Running on port ${port}`)
+  console.log(`Running on port ${port}`)
 })
