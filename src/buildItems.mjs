@@ -31,22 +31,22 @@ let updateItems = () => {
     getItemList.push(getItem(itemList.pop()))
   }
 
-  Promise.all(getItemList)
-    .then(data => {
-      data.forEach(item => {
-        itemInfo[item['type_id']] = {
-          name: item.name,
-          mass: item['packaged_volume'],
-        }
-      })
-      fs.writeFileSync('./eveData/itemsList.json', JSON.stringify(itemList))
-      fs.writeFileSync('./eveData/itemInfo.json', JSON.stringify(itemInfo), err => console.log(err))
-      updateItems()
-    })
-    .catch(err => {
-      console.log('failed')
-      updateItems()
-    })
+    Promise.all(getItemList)
+        .then(data => {
+            data.forEach(item => {
+                itemInfo[item['type_id']] = {
+                    name: item.name,
+                    vol: item['packaged_volume'],
+                }
+            })
+            fs.writeFileSync('./eveData/itemsList.json', JSON.stringify(itemList))
+            fs.writeFileSync('./eveData/itemInfo.json', JSON.stringify(itemInfo), err => console.log(err))
+            updateItems()
+        })
+        .catch(err => {
+            console.log('failed')
+            updateItems()
+        })
 }
 
 updateItems()
