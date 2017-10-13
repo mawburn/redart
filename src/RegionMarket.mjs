@@ -66,9 +66,7 @@ export default class RegionMarket {
         this.expires = this.expires || moment(response.headers.expires).utc().format()
 
         return response.body.map(rawOrder => {
-          const order = new Order(rawOrder)
-          const shouldReturn = order.highSec && order.legal && (!order.buy || order.price > 3)
-          return shouldReturn ? order : undefined
+          return new Order(rawOrder)
         }).filter(o => o)
       })
   }

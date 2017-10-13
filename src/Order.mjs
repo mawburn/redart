@@ -37,7 +37,7 @@ export default class Order {
   }
 
   doable(buy, price, item, loc, time) {
-    return (!order.buy || order.price > 3) // if a sell order over 3
+    return (!buy || price > 3) // if a sell order over 3
     !this.ignore(item) &&
                 this.isHighSec(loc) &&
                 moment().add(20, 'minutes').isBefore(time)

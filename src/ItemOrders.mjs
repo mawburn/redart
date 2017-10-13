@@ -9,7 +9,6 @@ export default class ItemOrders {
       console.log(`Can't find item: ${item}`)
     }
 
-
     this.orders = {
       sell: [],
       buy: [],

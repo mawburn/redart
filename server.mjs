@@ -1,10 +1,11 @@
 import express from 'express'
 import processOrders from './src/processOrders'
 import moment from 'moment'
-import timeout from 'connect-timeout'
 
 const app = express()
 const port = process.env.PORT || 8080
+
+app.disable('etag')
 
 let GOOD_ORDERS = {
   expires: moment().subtract(10, 'seconds').utc().format(),
@@ -27,25 +28,27 @@ const pendingOrders = () => {
       }
 
       console.log('done')
-      resolve()
     })
 }
 
-app.get('/', (req, res) => {
+app.get('/orders', (req, res) => {
   const pending = GOOD_ORDERS.pending
 
-  if(!pending && moment().isAfter(GOOD_ORDERS.expires)) {
-    !GOOD_ORDERS.pending && pendingOrders()
+  if(pending) {
+    res.status('204')
+    res.send('')
+  } else if(moment().isAfter(GOOD_ORDERS.expires)) {
+    !pending && pendingOrders()
     res.status('202')
     res.send('')
-  } else if(pending) {
-    res.status('204')
   } else {
     res.status('200')
     res.type('json')
     res.send(GOOD_ORDERS)
   }
 })
+
+app.use('/', express.static('public'))
 
 app.listen(port, () => {
   console.log(`Running on port ${port}`)
