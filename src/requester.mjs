@@ -18,17 +18,17 @@ const requester = (input) => {
       .then(resolveData => {
         const newData = processor(resolveData, data)
 
-        resolve({
-          chain,
-          limit,
-          data: newData,
-          requester,
-          processor,
-        })
-      })
-      .catch(err => {
-        console.log(err)
-        console.log(`Failed: retrying ${shortChain.length} endpoints`)
+                resolve({
+                    chain,
+                    limit,
+                    data: newData,
+                    requester,
+                    processor,
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                console.log(`Failed: retrying ${shortChain.length} endpoints`)
 
         let retry = input.retry || 10
 
