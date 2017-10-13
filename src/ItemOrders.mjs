@@ -1,13 +1,13 @@
 import itemInfo from '../eveData/itemInfo'
 
 export default class ItemOrders {
-    constructor(item) {
-        if(itemInfo[item]) {
-            this.vol = itemInfo[item].vol
-            this.name = itemInfo[item].name
-        } else {
-            console.log(`Can't find item: ${item}`)
-        }
+  constructor(item) {
+    if(itemInfo[item]) {
+      this.vol = itemInfo[item].vol
+      this.name = itemInfo[item].name
+    } else {
+      console.log(`Can't find item: ${item}`)
+    }
 
 
     this.orders = {
