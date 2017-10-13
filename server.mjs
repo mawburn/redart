@@ -32,11 +32,13 @@ const pendingOrders = () => {
 }
 
 app.get('/', (req, res) => {
-  if(moment().isAfter(GOOD_ORDERS.expires)) {
-    pendingOrders()
+  const pending = GOOD_ORDERS.pending
+
+  if(!pending && moment().isAfter(GOOD_ORDERS.expires)) {
+    !GOOD_ORDERS.pending && pendingOrders()
     res.status('202')
     res.send('')
-  } else if(GOOD_ORDERS.pending) {
+  } else if(pending) {
     res.status('204')
   } else {
     res.status('200')
