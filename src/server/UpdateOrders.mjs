@@ -35,6 +35,7 @@ export default class UpdateOrders {
 
   updater() {
     if(!this.pending && moment().isAfter(this.expires)) {
+      console.log('\n-------[ Updating Orders ]-------')
       this.expires = moment().add(300, 'seconds').utc().format()
       this.getItems()
     } else if (this.pending) {
@@ -51,7 +52,11 @@ export default class UpdateOrders {
             const items = {}
 
             Object.keys(data).forEach(key => {
-              items[key] = ItemOrders.filterByProfit(data[key], 10)
+              const filteredOrders = ItemOrders.filterByProfit(data[key], 10)
+
+              if(filteredOrders) {
+                items[key] = filteredOrders
+              }
             })
 
             this.items = {...items}
@@ -83,7 +88,7 @@ export default class UpdateOrders {
 
   processMarketData(orderList, oldData) {
     const newData = {...oldData}
-    const marketData = [...orderList]
+    const marketData = [].concat(...orderList)
 
     marketData.forEach(order => {
       const itemOrder = newData[order.type] || new ItemOrders(order.type)
