@@ -11,6 +11,7 @@
     "dev": "node --experimental-modules ./server.mjs",
     "start": "node --experimental-modules ./server.mjs",
     "items": "node --experimental-modules ./src/buildItems.mjs",
+    "lint": "eslint --ext .js,.jsx,.mjs .",
     "lint:fix": "eslint --fix --ext .js,.jsx,.mjs ."
   },
   "author": "",

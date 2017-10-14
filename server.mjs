@@ -1,53 +1,44 @@
 import express from 'express'
-import processOrders from './src/processOrders'
-import moment from 'moment'
+import GoodOrders from './src/GoodOrders'
 
 const app = express()
-const port = process.env.PORT || 8080
-
 app.disable('etag')
 
-let GOOD_ORDERS = {
-  expires: moment().subtract(10, 'seconds').utc().format(),
-  pending: false,
-}
+const goodOrders = new GoodOrders()
 
-const pendingOrders = () => {
-  const oldExpires = GOOD_ORDERS.expires
-
-  GOOD_ORDERS = {
-    expires: oldExpires,
-    pending: true,
-  }
-
-  processOrders()
-    .then(data => {
-      GOOD_ORDERS = {
-        pending: false,
-        ...data,
-      }
-
-      console.log('done')
-    })
-}
+const port = process.env.PORT || 8080
+const updateKey = process.env.UPDATE_KEY || 'test'
 
 app.get('/orders', (req, res) => {
-  const pending = GOOD_ORDERS.pending
+  const orders = goodOrders.cache
 
-  if(pending) {
-    res.status('204')
-    res.send('')
-  } else if(moment().isAfter(GOOD_ORDERS.expires)) {
-    !pending && pendingOrders()
-    res.status('202')
-    res.send('')
-  } else {
-    res.status('200')
+  if(orders && orders.items || orders.pending) {
     res.type('json')
-    res.send(GOOD_ORDERS)
+    res.send(orders)
+  } else {
+    res.status(204)
   }
 })
 
+app.get('/start/:id', (req, res) => {
+  if(req.params.id === updateKey) {
+    goodOrders.startUpdater()
+    res.status(202)
+    res.send('OK')
+  } else {
+    res.status('404')
+  }
+})
+
+app.get('/stop/:id', (req, res) => {
+  if(req.params.id === updateKey) {
+    goodOrders.stopUpater()
+    res.send('OK')
+  } else {
+    res.status('404')
+  }
+})
+ 
 app.use('/', express.static('public'))
 
 app.listen(port, () => {

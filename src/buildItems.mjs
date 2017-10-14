@@ -1,20 +1,18 @@
 import fs from 'fs'
 import request from 'request-promise-native'
-import api from './api'
+import api from './api' 
 
-const options = (item) => {
+const options = item => {
   return {
     uri: api.type(item),
-    method: 'GET',
+    method: 'GET', 
     json: true,
   }
 }
 
-const getItem = (item) => {
-  return request(options(item))
-}
+const getItem = item => request(options(item))
 
-let updateItems = () => {
+const updateItems = () => {
   const itemList = JSON.parse(fs.readFileSync('./eveData/itemsList.json', 'utf8'))
   const itemInfo = JSON.parse(fs.readFileSync('./eveData/itemInfo.json', 'utf8'))
 
@@ -25,18 +23,18 @@ let updateItems = () => {
     return null
   }
 
-  const getItemList = []
+  const getItemList = [] 
 
-  for(let i=0; i < itemsLength; i++) {
+  for(let i = 0; i < itemsLength; i++) {
     getItemList.push(getItem(itemList.pop()))
   }
 
   Promise.all(getItemList)
     .then(data => {
       data.forEach(item => {
-        itemInfo[item['type_id']] = {
+        itemInfo[item.type_id] = {
           name: item.name,
-          vol: item['packaged_volume'],
+          vol: item.packaged_volume,
         }
       })
       fs.writeFileSync('./eveData/itemsList.json', JSON.stringify(itemList))
@@ -44,9 +42,9 @@ let updateItems = () => {
       updateItems()
     })
     .catch(err => {
-      console.log('failed')
+      console.log(err)
       updateItems()
     })
-}
+} 
 
 updateItems()

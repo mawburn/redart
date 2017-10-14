@@ -13,16 +13,16 @@ export default class RegionMarket {
     this.options = this.options.bind(this)
     this.getData = this.getData.bind(this)
     this.getPage = this.getPage.bind(this)
-  }
+  } 
 
   options(page) {
     return {
       uri: api.market.orders(this.id, page),
       method: 'GET',
       json: true,
-      transform: ((body, response, resolveWithFullResponse) => {
-        return { 'headers': response.headers, body}
-      })
+      transform: ((body, response) => {
+        return {headers: response.headers, body}
+      }),
     }
   }
 
@@ -30,8 +30,8 @@ export default class RegionMarket {
     return requester({
       chain,
       data: [],
-      requester: (p) => this.getPage(p),
-      processor: (x) => [].concat(...x),
+      requester: page => this.getPage(page),
+      processor: x => [].concat(...x),
       limit: pageLimit,
     })
   }
@@ -46,16 +46,14 @@ export default class RegionMarket {
 
         const chain = []
 
-        for(let i=2; i <= this.pages; i++) {
+        for(let i = 2; i <= this.pages; i++) {
           chain.push(i)
         }
 
         console.log(`get pages ${JSON.stringify(chain)} of ${this.id}`)
 
         return this.getMarketData(chain)
-          .then(data => {
-            return [].concat(...data)
-          })
+          .then(data => [].concat(...data))
       })
   }
 
@@ -65,9 +63,9 @@ export default class RegionMarket {
         this.pages = this.pages || response.headers['x-pages']
         this.expires = this.expires || moment(response.headers.expires).utc().format()
 
-        return response.body.map(rawOrder => {
-          return new Order(rawOrder)
-        }).filter(o => o)
+        return response.body
+          .map(rawOrder => new Order(rawOrder))
+          .filter(o => o.type)
       })
   }
 }
