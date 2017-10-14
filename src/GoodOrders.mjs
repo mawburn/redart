@@ -1,5 +1,6 @@
 import moment from 'moment'
 import processOrders from './processOrders'
+import s3upload from './s3upload'
 
 export default class GoodOrders {
   constructor() {
@@ -46,6 +47,7 @@ export default class GoodOrders {
         this.items = data
         this.pending = false
 
+        s3upload(this.cache)
         console.log('done')
       }) 
   }
