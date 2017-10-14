@@ -54,7 +54,7 @@ export default class UpdateOrders {
               items[key] = ItemOrders.filterByProfit(data[key], 10)
             })
 
-            this.items = {...items}
+            this.items = items
             this.pending = false
             this.currentStatus = 'ok'
 
@@ -82,7 +82,7 @@ export default class UpdateOrders {
   }
 
   processMarketData(orderList, oldData) {
-    const newData = {...oldData}
+    const newData = oldData
     const marketData = [...orderList]
 
     marketData.forEach(order => {
