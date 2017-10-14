@@ -29,8 +29,8 @@ const printOrders = () => {
 
         Object.keys(items).forEach(key => {
           if(key !== 'expires' && key !== 'pending') {
-            const o = orders[key]
-            output.push(`<div style="padding:0.5rem"><strong>${o.name}</strong> : Vol (${o.mass}) : Sell (${o.orders.sell.length}) : Buy (${o.orders.buy.length})</div>`)
+            const item = items.key
+            output.push(`<div style="padding:0.5rem"><strong>${item.name}</strong> : Vol (${item.mass}) : Sell (${item.orders.sell.length}) : Buy (${item.orders.buy.length})</div>`)
           }
         })
         app.innerHTML = app.innerHTML + output.join('')
