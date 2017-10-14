@@ -1,7 +1,7 @@
 import bs from 'binary-search'
 import moment from 'moment'
-import highSecStations from '../eveData/highSecStations'
-import ignoredItems from '../eveData/ignoredItems'
+import highSecStations from '../../eveData/highSecStations'
+import ignoredItems from '../../eveData/ignoredItems'
 
 export default class Order {
   constructor(order) {
@@ -11,7 +11,7 @@ export default class Order {
     const price = order.price
     const ends = moment(order.issued).add(order.duration, 'days').utc().format()
 
-    if(this.doable(buy, price, type, loc, ends)) {
+    if(this.isTradable(buy, price, type, loc, ends)) {
       Object.assign(this, {
         type,
         buy,
@@ -32,13 +32,13 @@ export default class Order {
     return bs(highSecStations, loc, (a,b) => a - b) > -1
   }
 
-  ignore(item) {
+  shouldIgnore(item) {
     return bs(ignoredItems, item, (a, b) => a - b) < 0
   }
 
-  doable(buy, price, item, loc, time) {
+  isTradable(buy, price, item, loc, time) {
     return (!buy || price > 3) && // if a sell order over 3
-      this.ignore(item) &&
+      this.shouldIgnore(item) &&
       this.isHighSec(loc) &&
       moment().add(20, 'minutes').isBefore(time)
   }

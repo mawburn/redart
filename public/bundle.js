@@ -23,12 +23,13 @@ const printOrders = () => {
         app.innerHTML = `<div style="text-align:center">Waiting: ${count}</div>`
         setTimeout(printOrders, 1000)
       } else {
-        app.innerHTML = `Total Items: ${Object.keys(items).length - 2}`
+        app.innerHTML = `<h3>Total Items: ${Object.keys(items).length}</h3>`
+        app.innerHTML += `<h4>Expires: ${(new Date(orders.expires)).toString()}</h4>`
 
         Object.keys(items).forEach(key => {
           if(key !== 'expires' && key !== 'pending') {
-            const item = items.key
-            output.push(`<div style="padding:0.5rem"><strong>${item.name}</strong> : Vol (${item.mass}) : Sell (${item.orders.sell.length}) : Buy (${item.orders.buy.length})</div>`)
+            const item = items[key]
+            output.push(`<div style="padding:0.5rem"><strong>${item.name}</strong> : Vol (${item.vol}) : Sell (${item.orders.sell.length}) : Buy (${item.orders.buy.length})</div>`)
           }
         })
         app.innerHTML = app.innerHTML + output.join('')

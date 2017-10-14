@@ -7,7 +7,7 @@ const s3Upload = orders => {
   const s3Params = {
     Bucket: bucket,
     Key: 'orders',
-    CacheControl: 'max-age=300,public',
+    CacheControl: 'max-age=30,public',
     ContentType: 'application/json',
     ACL: 'public-read',
     Body: JSON.stringify(orders),

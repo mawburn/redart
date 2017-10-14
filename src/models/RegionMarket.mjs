@@ -1,8 +1,8 @@
 import request from 'request-promise-native'
 import moment from 'moment'
 import Order from './Order'
-import requester from './requester'
-import api from './api'
+import requester from '../util/requester'
+import esi from '../util/esiEndpoints'
 
 const pageLimit = process.env.PAGE_LIMIT || 5
 
@@ -17,7 +17,7 @@ export default class RegionMarket {
 
   options(page) {
     return {
-      uri: api.market.orders(this.id, page),
+      uri: esi.market.orders(this.id, page),
       method: 'GET',
       json: true,
       transform: ((body, response) => {
