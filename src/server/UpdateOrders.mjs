@@ -59,7 +59,7 @@ export default class UpdateOrders {
               }
             })
 
-            this.items = items
+            this.items = {...items}
             this.pending = false
             this.currentStatus = 'ok'
 
