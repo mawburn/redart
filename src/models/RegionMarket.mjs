@@ -1,10 +1,10 @@
 import request from 'request-promise-native'
 import moment from 'moment'
 import Order from './Order'
-import requester from './requester'
-import api from './api'
+import requester from '../util/requester'
+import esi from '../util/esiEndpoints'
 
-const pageLimit = process.env.PAGE_LIMIT || 5
+const pageLimit = process.env.PAGE_LIMIT || 100
 
 export default class RegionMarket {
   constructor(region) {
@@ -17,7 +17,7 @@ export default class RegionMarket {
 
   options(page) {
     return {
-      uri: api.market.orders(this.id, page),
+      uri: esi.market.orders(this.id, page),
       method: 'GET',
       json: true,
       transform: ((body, response) => {
@@ -37,7 +37,7 @@ export default class RegionMarket {
   }
 
   getData() {
-    console.log(`get page 1 of ${this.id}`)
+    console.log(`get region: ${this.id}`)
     return this.getMarketData([1]).
       then(data => {
         if(this.pages < 2) {
@@ -50,7 +50,7 @@ export default class RegionMarket {
           chain.push(i)
         }
 
-        console.log(`get pages ${JSON.stringify(chain)} of ${this.id}`)
+        // console.log(`get pages ${JSON.stringify(chain)} of ${this.id}`)
 
         return this.getMarketData(chain)
           .then(data => [].concat(...data))

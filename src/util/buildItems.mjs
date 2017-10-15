@@ -1,10 +1,10 @@
 import fs from 'fs'
 import request from 'request-promise-native'
-import api from './api' 
+import esi from './esiEndpoints' 
 
 const options = item => {
   return {
-    uri: api.type(item),
+    uri: esi.type(item),
     method: 'GET', 
     json: true,
   }

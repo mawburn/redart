@@ -1,4 +1,4 @@
-import itemInfo from '../eveData/itemInfo'
+import itemInfo from '../../eveData/itemInfo'
 
 export default class ItemOrders {
   constructor(item) {
