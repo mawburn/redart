@@ -1,8 +1,13 @@
 import React, {Component} from 'react'
 import logo from './logo.svg'
 import './App.css'
+import getOrders from './fetchApi'
 
 class App extends Component {
+  componentDidMount() {
+    getOrders.then(json => console.log(json))
+  }
+
   render() {
     return (
       <div className="App">

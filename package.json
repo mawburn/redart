@@ -8,13 +8,12 @@
     "npm": ">=5"
   },
   "scripts": {
-    "dev": "node --experimental-modules ./src/server.mjs",
-    "start": "node --experimental-modules ./src/server.mjs",
-    "items": "node --experimental-modules ./src/util/buildItems.mjs",
+    "dev": "node --experimental-modules ./server/server.mjs",
+    "start": "node --experimental-modules ./server/server.mjs",
+    "items": "node --experimental-modules ./server/util/buildItems.mjs",
     "lint": "eslint --ext .js,.jsx,.mjs .",
     "lint:fix": "eslint --fix --ext .js,.jsx,.mjs .",
     "build": "rm -rf public && webpack",
-    "client": "cross-env NODE_ENV=dev webpack-dev-server"
   },
   "author": "Matt <mawburn7@gmail.com>",
   "license": "ISC",
