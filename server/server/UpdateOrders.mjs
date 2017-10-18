@@ -52,7 +52,7 @@ export default class UpdateOrders {
             const items = {}
 
             Object.keys(data).forEach(key => {
-              const filteredOrders = ItemOrders.filterByProfit(data[key], 10)
+              const filteredOrders = ItemOrders.filterByProfit(data[key], 4)
 
               if(filteredOrders) {
                 items[key] = filteredOrders

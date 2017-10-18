@@ -11,9 +11,8 @@ export default class Order {
     const price = order.price
     const ends = moment(order.issued).add(order.duration, 'days').utc().format()
 
-    if(this.isTradable(buy, price, type, loc, ends)) {
+    if(this.isTradable(buy, price, type, location, ends)) {
       Object.assign(this, {
-        type,
         buy,
         price,
         volume: {
@@ -22,7 +21,7 @@ export default class Order {
           min: order.min_volume,
         },
         range: order.range,
-        location: loc,
+        location,
         ends,
       })
     }
@@ -37,7 +36,7 @@ export default class Order {
   }
 
   isTradable(buy, price, item, loc, time) {
-    return (!buy || price > 3) && // if a sell order over 3
+    return (!buy || price > 1.5) && // if a sell order over 1
       this.shouldIgnore(item) &&
       this.isHighSec(loc) &&
       moment().add(20, 'minutes').isBefore(time)

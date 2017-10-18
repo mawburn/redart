@@ -1,11 +1,44 @@
 import React, {Component} from 'react'
 import logo from './logo.svg'
 import './App.css'
-import getOrders from './fetchApi'
+import fetchApi from './util/fetchApi'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {}
+  }
+
   componentDidMount() {
-    getOrders.then(json => console.log(json))
+    fetchApi.then(data => {
+      this.setState({orders: data})
+    })
+  }
+
+  renderOrders(orders) {
+    if(orders) {
+      return Object.keys(orders).map((key, i) => {
+        const item = orders[key]
+        return (
+          <li key={`${item.name} - ${i}`}>
+            <h4>{item.name} - {item.vol}</h4>
+            Buy:
+            <ul>
+              {
+                item.orders.buy.map((order, i) => <li key={`${order.price}-${i}`}>{order.price} - {order.volume.remain}</li>)
+              }
+            </ul>
+            Sell:
+            <ul>
+              {
+                item.orders.sell.map((order, i) => <li key={`${order.price}-${i}`}>{order.price} - {order.volume.remain}</li>)
+              }
+            </ul>
+          </li>
+        )
+      })
+    }
   }
 
   render() {
@@ -15,9 +48,9 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p> 
+        <ul className="main-list">
+          {this.renderOrders(this.state.orders)}
+        </ul>
       </div>  
     )
   }
