@@ -13,6 +13,7 @@ export default class Order {
 
     if(this.isTradable(buy, price, type, location, ends)) {
       Object.assign(this, {
+        type,
         buy,
         price,
         volume: {
