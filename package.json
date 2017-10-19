@@ -13,7 +13,7 @@
     "items": "node --experimental-modules ./server/util/buildItems.mjs",
     "lint": "eslint --ext .js,.jsx,.mjs .",
     "lint:fix": "eslint --fix --ext .js,.jsx,.mjs .",
-    "build": "rm -rf public && webpack",
+    "build": "rm -rf public && webpack"
   },
   "author": "Matt <mawburn7@gmail.com>",
   "license": "ISC",
