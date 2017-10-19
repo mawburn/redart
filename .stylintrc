@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "brackets": "never",
+    "colons": "never",
+    "colors": "always",
+    "commaSpace": "always",
+    "efficient": "always",
+    "indentPref": 2,
+    "leadingZero": "never",
+    "namingConvention": "camelCase",
+    "parenSpace": "never",
+    "prefixVarsWithDollar": "always",
+    "quotePref": "single",
+    "semicolons": "never",
+    "zeroUnits": "never"
+  }
+}
