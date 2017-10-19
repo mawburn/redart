@@ -6,7 +6,7 @@ import ignoredItems from '../../eveData/ignoredItems'
 export default class Order {
   constructor(order) {
     const type = order.type_id
-    const loc = order.location_id
+    const location = order.location_id
     const buy = order.is_buy_order
     const price = order.price
     const ends = moment(order.issued).add(order.duration, 'days').utc().format()
