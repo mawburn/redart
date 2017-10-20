@@ -12,6 +12,8 @@ export default class UpdateOrders {
     this.expires = moment().utc().format()
     this.pending = false
     this.items = {}
+    this.buy = {}
+    this.sell = {}
     this.regionLimit = process.env.REGION_LIMIT || 5
     this.currentStatus = 'empty'
 
@@ -21,7 +23,9 @@ export default class UpdateOrders {
   get cache() { 
     return {
       expires: this.expires,
-      items: this.items, 
+      // items: this.items,
+      buy: this.buy,
+      sell: this.sell,
     }
   }
 
@@ -48,32 +52,56 @@ export default class UpdateOrders {
     this.currentStatus = 'pending'
 
     this.getRegionData()
-        .then(data => {
-            const items = {}
+      .then(data => {
+        const items = {}
 
-            Object.keys(data).forEach(key => {
-              const filteredOrders = ItemOrders.filterByProfit(data[key], 4)
+        Object.keys(data).forEach(key => {
+          const filteredOrders = ItemOrders.filterByProfit(data[key], 4)
 
-              if(filteredOrders) {
-                items[key] = filteredOrders
-              }
-            })
+          if(filteredOrders) {
+            items[key] = filteredOrders
+          }
+        })
 
-            this.items = {...items}
-            this.pending = false
-            this.currentStatus = 'ok'
+        this.items = {...items}
+        this.pending = false
+        this.currentStatus = 'ok'
 
-            if(shouldUpload) {
-              s3upload(this.cache)
+        // quick hack to get the data in a more usable state
+        Object.keys(this.items).forEach(key => {
+          const sellOrders = this.items[key].orders.sell
+          const buyOrders = this.items[key].orders.buy
+
+          sellOrders.forEach(o => {
+            this.sell[o.location] = {
+              type: o.type,
+              price: o.price,
+              itemVol: this.items[key].vol,
+              sellVol: o.volume.remain,
             }
+          })
 
-            console.log('Updated List')
+          buyOrders.forEach(o => {
+            this.buy[key] = {
+              location: o.location,
+              price: o.price,
+              buyVol: o.volume.remain,
+              buyMin: o.volume.min,
+            }
+          })
         })
-        .catch(err => {
-          console.log(err)
-          this.pending = false
-          this.currentStatus = 'failed'
-        })
+
+        if(shouldUpload) {
+          s3upload(this.cache)
+        }
+
+        console.log('Updated List')
+      })
+      .catch(err => {
+        console.log(err)
+        this.pending = false
+        this.currentStatus = 'failed'
+      })
   }
 
   getRegionData() {
