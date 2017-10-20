@@ -22,7 +22,10 @@ export default class Station extends Component {
   render() {
     console.log(this.props.orders)
     return (
-      <div>{this.state.name}</div>
+      <div>{this.state.name}</div>,
+      <ul>
+        <li></li>
+      </ul>
     )
   }
 }

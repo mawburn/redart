@@ -24,8 +24,8 @@ export default class ItemOrders {
     const sell = order.orders.sell.sort((a, b) => a.price - b.price)
     const buy = order.orders.buy.sort((a, b) => b.price - a.price)
 
-    const sellLowest = sell[0].price * (marginPercent + 1)
-    const buyMax = buy[0].price 
+    const sellLowest = sell[0].price
+    const buyMax = buy[0].price * marginPercent
 
     if(sellLowest < buyMax) {
       const buyOrders = buy.filter(order => order.price > sellLowest)
