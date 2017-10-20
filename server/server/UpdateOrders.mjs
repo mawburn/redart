@@ -56,7 +56,7 @@ export default class UpdateOrders {
         const items = {}
 
         Object.keys(data).forEach(key => {
-          const filteredOrders = ItemOrders.filterByProfit(data[key], 4)
+          const filteredOrders = ItemOrders.filterByProfit(data[key], 3.5)
 
           if(filteredOrders) {
             items[key] = filteredOrders
@@ -73,32 +73,40 @@ export default class UpdateOrders {
           const buyOrders = this.items[key].orders.buy
 
           sellOrders.forEach(o => {
-            const orders = this.sell[o.location] || []
+            const orders = [...this.sell[o.location]] || []
 
             orders.push({
               type: o.type,
               price: o.price,
-              itemVol: this.items[key].vol,
-              sellVol: o.volume.remain,
+              vol: this.items[key].vol,
+              sellAmt: o.volume.remain,
               ends: o.ends,
             })
 
-            this.sell[o.location] = orders
+            this.sell[o.location] = [...orders]
           })
 
           buyOrders.forEach(o => {
-            const orders = this.buy[key] || []
+            const orders = [...this.buy[key]] || []
 
-            orders.push({
+            const newOrder = {
               loc: o.location,
               price: o.price,
-              buyVol: o.volume.remain,
-              buyMin: o.volume.min,
-              range: o.range,
+              buyAmt: o.volume.remain,
               ends: o.ends,
-            })
+            }
+
+            if(o.volume.min > 1) {
+              newOrder.min = o.volume.min
+            }
+
+            if(o.range !== 'station') {
+              newOrder.range = o.range
+            }
+
+            orders.push(newOrder)
             
-            this.buy[key] = orders
+            this.buy[key] = [...orders]
           })
         })
 
