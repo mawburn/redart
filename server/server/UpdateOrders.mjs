@@ -80,6 +80,7 @@ export default class UpdateOrders {
               price: o.price,
               itemVol: this.items[key].vol,
               sellVol: o.volume.remain,
+              ends: o.ends,
             })
 
             this.sell[o.location] = orders
@@ -93,6 +94,8 @@ export default class UpdateOrders {
               price: o.price,
               buyVol: o.volume.remain,
               buyMin: o.volume.min,
+              range: o.range,
+              ends: o.ends,
             })
             
             this.buy[key] = orders
