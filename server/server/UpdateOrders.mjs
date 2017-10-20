@@ -73,7 +73,7 @@ export default class UpdateOrders {
           const buyOrders = this.items[key].orders.buy
 
           sellOrders.forEach(o => {
-            const orders = this.sell[key] || []
+            const orders = this.sell[o.location] || []
 
             orders.push({
               type: o.type,
