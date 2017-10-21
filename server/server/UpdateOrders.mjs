@@ -73,7 +73,7 @@ export default class UpdateOrders {
           const buyOrders = this.items[key].orders.buy
 
           sellOrders.forEach(o => {
-            const orders = [...this.sell[o.location]] || []
+            const orders = (this.sell[o.location]) ? [...this.sell[o.location]] : []
 
             orders.push({
               type: o.type,
@@ -87,7 +87,7 @@ export default class UpdateOrders {
           })
 
           buyOrders.forEach(o => {
-            const orders = [...this.buy[key]] || []
+            const orders = (this.buy[key]) ? [...this.buy[key]] : []
 
             const newOrder = {
               loc: o.location,

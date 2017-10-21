@@ -50,8 +50,6 @@ export default class RegionMarket {
           chain.push(i)
         }
 
-        // console.log(`get pages ${JSON.stringify(chain)} of ${this.id}`)
-
         return this.getMarketData(chain)
           .then(data => [].concat(...data))
       })
