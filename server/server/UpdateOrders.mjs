@@ -23,7 +23,7 @@ export default class UpdateOrders {
   get cache() { 
     return {
       expires: this.expires,
-      // items: this.items,
+      items: this.items,
       buy: this.buy,
       sell: this.sell,
     }
