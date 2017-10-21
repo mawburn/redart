@@ -69,8 +69,8 @@ export default class UpdateOrders {
 
         // quick hack to get the data in a more usable state
         Object.keys(this.items).forEach(key => {
-          const sellOrders = this.items[key].orders.sell
-          const buyOrders = this.items[key].orders.buy
+          const sellOrders = [...this.items[key].orders.sell]
+          const buyOrders = [...this.items[key].orders.buy]
 
           sellOrders.forEach(o => {
             const orders = (this.sell[o.location]) ? [...this.sell[o.location]] : []
