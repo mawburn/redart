@@ -12,7 +12,8 @@
     "es6": true,
     "node": true,
     "jest": true,
-    "browser": true
+    "browser": true,
+    "jsx": true
   },
 	"rules": {
     "array-bracket-spacing": ["warn", "never"],

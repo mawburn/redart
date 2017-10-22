@@ -20,17 +20,10 @@ export default class Station extends Component {
   }
 
   render() {
-    console.log(this.props.orders)
-    return (
-      <div>{this.state.name}</div>,
-      <ul>
-        <li></li>
-      </ul>
-    )
+    return <div>{this.state.name}</div>
   }
 }
 
 Station.propTypes = {
   id: PropTypes.string.isRequired,
-  orders: PropTypes.object.isRequired,
 }
